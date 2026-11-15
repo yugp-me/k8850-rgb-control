@@ -36,10 +36,10 @@ def scale_color(value, percent):
     return tuple(max(0, min(255, round(c * percent / 100))) for c in rgb(value))
 
 
-class K8850Manager:
+class K8850Control:
     def __init__(self, root):
         self.root = root
-        root.title("K8850 RGB Manager")
+        root.title("K8850 RGB Control")
         root.geometry("790x700")
         root.minsize(720, 650)
         self.device = None
@@ -109,7 +109,7 @@ class K8850Manager:
     def build(self):
         outer = ttk.Frame(self.root, padding=14)
         outer.pack(fill="both", expand=True)
-        ttk.Label(outer, text="K8850 RGB Manager", font=("Segoe UI", 19, "bold")).pack(anchor="w")
+        ttk.Label(outer, text="K8850 RGB Control", font=("Segoe UI", 19, "bold")).pack(anchor="w")
         ttk.Label(outer, text="16-key | 3-knob macropad | USB 514C:8850",
                   foreground="#666").pack(anchor="w", pady=(0, 10))
 
@@ -317,6 +317,7 @@ class K8850Manager:
         try:
             self.send_layer(layer)
             self.save_profiles(quiet=True)
+            messagebox.showinfo("Settings applied", f"Layer {layer + 1} settings applied successfully.", parent=self.root)
         except Exception as exc:
             messagebox.showerror("Could not apply", str(exc), parent=self.root)
 
@@ -326,6 +327,7 @@ class K8850Manager:
             for i in range(3):
                 self.send_layer(i)
             self.save_profiles(quiet=True)
+            messagebox.showinfo("Settings applied", "All 3 layer settings applied successfully.", parent=self.root)
         except Exception as exc:
             messagebox.showerror("Could not apply all layers", str(exc), parent=self.root)
 
@@ -369,7 +371,7 @@ class K8850Manager:
 
 def main():
     root = tk.Tk()
-    K8850Manager(root)
+    K8850Control(root)
     root.mainloop()
 
 
